@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Vote for your life</title>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!--link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"-->
+  <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script-->
+  <style>
+  #grafiikka
+  {
+      position:fixed;
+      padding:10px;
+      margin:0;
+
+      top:0;
+      left:0;
+
+      width: 100%;
+      height: 100%;
+      background:rgba(255,0,0,0.5);
+
+      display: none;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>Äänestyssivu <small> - äänestä suosikkiasi</small></h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10">
+        <h2>Lisää äänestettävät ryhmät</h2>
+
+          <div class="form-group">
+            <label for="nimi">Anna nimi:</label><input class="form-control" type="text" id="nimi" name="nimi" placeholder="uuden ryhmän nimi tähän"/>
+            <button id="lisää" class="btn btn-default">Lisää</button>
+          </div>
+      
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-default">Nollaa</button>
+      </div>
+
+    </div>
+
+    <div class="row" id="kohteet">
+
+    </div>
+
+    <div id="grafiikka">
+
+    </div>
+
+  <script>
+    $(document).ready(function(){
+      var pisteet = {};
+      var counter = 0;
+      // uusien äänestyskohteiden lisäys
+      $('#lisää').click(function(){
+        var newGroup = $('#nimi').val();
+        $('#kohteet').append('<div class="kohde">' + newGroup + '<button class="kohdeBtn" data-kuka="' + newGroup + '">Äänestä</button></div>');
+        pisteet[newGroup] = 0;
+        console.log(pisteet);
+      });
+
+      $('#kohteet').on('click','.kohdeBtn', function(){
+        $('#grafiikka').html("");
+        var kama = $(this).data("kuka");
+        pisteet[kama] = pisteet[kama] + 1;
+        console.log(pisteet);
+        for (var key in pisteet) {
+          if (pisteet.hasOwnProperty(key)) {
+            $('#grafiikka').append('<div><h1>' + key + ' : ' + pisteet[key] + '</h1></div>')
+          }
+        }
+        $("#grafiikka").show().delay(5000).fadeOut();
+      });
+    });
+  </script>
+</body>
+</html>
